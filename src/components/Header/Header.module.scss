@@ -1,0 +1,28 @@
+@import '../../style/common';
+@import '../../style/variables';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1440px;
+  height: 80px;
+  margin: auto;
+  padding: 16px 22px 13px 22px;
+  font-size: 18px;
+  line-height: 1;
+  background-color: $color-white;
+
+  a {
+    padding: 10px 18px;
+    &:first-child {
+      margin-right: 19px;
+    }
+
+    &:last-child {
+      color: #52C41A;
+      border: 1px solid #52C41A;
+      border-radius: 5px;
+    }
+  }
+}

@@ -1,0 +1,58 @@
+@import '../../style/common';
+@import '../../style/variables';
+
+.article {
+  width: 80%;
+
+  &__title {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1;
+    margin-bottom: 6px;
+    color: $color-title-articles;
+  }
+
+  &__tag {
+    line-height: 1;
+    padding: 3px 5px;
+    border: 1px solid rgba(0, 0, 0, .5);
+    border-radius: 2px;
+    color: rgba(0, 0, 0, .5);
+
+    &:not(:last-child) {
+      margin-right: 5px;
+    }
+  }
+
+  &__description {
+    width: 80%;
+  }
+}
+
+.author {
+  display: flex;
+
+  &__username {
+    margin-right: 12px;
+    font-size: 18px;
+    color: rgba(0, 0, 0, .85);
+    text-transform: capitalize;
+    
+    span {
+      display: block;
+      // width: 100%;
+      font-size: 12px;
+      line-height: 1;
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  // &__date {
+
+  // }
+  &__img {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+  }
+}
