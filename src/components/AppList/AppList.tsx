@@ -33,7 +33,7 @@ const AppList: FC<ArcticlePage> = ({ state, getContent }) => {
           tagList={el.tagList}
           author={el.author}
           slug={el.slug}
-          body={''}
+          body={el.body}
           articlesCount={0}
           updatedAt={el.updatedAt}
         />

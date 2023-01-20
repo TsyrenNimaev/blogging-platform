@@ -1,0 +1,67 @@
+@import '../../style/common';
+@import '../../style/variables';
+
+.markdown {
+  width: 941px;
+  margin: auto;
+  margin-top: 20px;
+  padding: 20px;
+  background-color: $color-white;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, .25%);
+
+  .title {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #1890FF;
+  }
+
+  &__title {
+    display: flex;
+    justify-content: space-between;
+
+    div {
+      &:last-child {
+        display: flex;
+      }
+    }
+  }
+
+  &__tag {
+    display: inline-block;
+    line-height: 1;
+    margin-bottom: 20px;
+    padding: 3px 5px;
+    border: 1px solid rgba(0, 0, 0, .5);
+    border-radius: 2px;
+    color: rgba(0, 0, 0, .5);
+  }
+
+  &__img {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+  }
+
+  &__username {
+    margin-right: 15px;
+    font-size: 18px;
+    color: rgba(0, 0, 0, .85%);
+
+    span {
+      display: block;
+      font-size: 12px;
+      line-height: 1;
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  &__description {
+    margin-bottom: 25px;
+  }
+
+  &__body {
+    font-size: 20px;
+    line-height: 28px;
+    color: rgba(0, 0, 0, .75%);
+  }
+}

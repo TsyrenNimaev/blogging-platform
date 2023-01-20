@@ -3,7 +3,7 @@ import { useDispatch, connect } from 'react-redux';
 import { Pagination } from 'antd';
 
 import { RootState } from '../../store/root-reducer';
-import { getContent as swichC } from '../../services/servic-api';
+import { getContent } from '../../services/servic-api';
 import { GetActionType } from '../../store/action';
 
 import classes from './Pagination.module.scss';
@@ -16,7 +16,7 @@ const Paginations: FC<PaginationType> = ({ totalItems }) => {
   const dispatch = useDispatch();
   const [current, setCurrent] = useState(1);
   const onChange = (page: number) => {
-    dispatch({ type: GetActionType.PAGINATION, offset: page * 10 });
+    dispatch({ type: GetActionType.PAGINATION, offset: page * 5 });
     setCurrent(page);
   };
 
@@ -36,7 +36,7 @@ const mapStateToProps = (state: RootState) => {
 };
 
 const mapDispatchToProps = {
-  getContent: swichC,
+  switchPage: getContent,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Paginations);

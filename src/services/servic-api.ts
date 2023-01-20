@@ -6,7 +6,7 @@ import { GetActionType, GetCombineType } from '../store/action';
 export const getContent = (num: number) => {
   return async (dispatch: Dispatch<GetCombineType>) => {
     try {
-      const response = await axios.get('https://blog.kata.academy/api/articles?limit=5&offset=0');
+      const response = await axios.get(`https://blog.kata.academy/api/articles?limit=5&offset=${num}`);
       dispatch({
         type: GetActionType.SUCCESS_LOAD,
         payload: response.data.articles,

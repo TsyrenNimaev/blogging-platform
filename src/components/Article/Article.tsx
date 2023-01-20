@@ -2,13 +2,14 @@
 import React, { FC, useState } from 'react';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
+// import ReactMarkdown from 'react-markdown';
 
 import { ArticleList } from '../../store/type';
 import defaultImg from '../../assets/img/defaultImg.png';
 
 import classes from './Article.module.scss';
 
-const Article: FC<ArticleList> = ({ title, description, tagList, author, slug, updatedAt }) => {
+const Article: FC<ArticleList> = ({ title, description, tagList, author, body, slug, updatedAt }) => {
   const formatedDate = format(new Date(updatedAt), 'MMM d, yyyy');
   const cutTitle = title.length > 20 ? title.slice(0, 20).concat('...') : title;
   const cutDescription =
@@ -48,6 +49,7 @@ const Article: FC<ArticleList> = ({ title, description, tagList, author, slug, u
           className={classes.author__img}
         />
       </div>
+      {/* <ReactMarkdown className={classes.markdown__body}>{body}</ReactMarkdown> */}
     </>
   );
 };

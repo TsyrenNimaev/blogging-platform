@@ -43,17 +43,23 @@ const MarkdownPage: FC<Markdown> = ({ getSinglePage, state, slug }) => {
       <div className={classes.markdown__title}>
         <div>
           <h3 className={classes.title}>{item.title}</h3>
-          <span>{tags}</span>
+          <span className={classes.markdown__tag}>{tags}</span>
         </div>
         <div>
-          <span>
+          <span className={classes.markdown__username}>
             {item.author.username}
             <span>{formatedDate}</span>
           </span>
-          <img src={ErrorImg ? defaultImg : item.author.image} onError={() => setErrorImg(true)} alt="author" />
+          <img
+            src={ErrorImg ? defaultImg : item.author.image}
+            className={classes.markdown__img}
+            onError={() => setErrorImg(true)}
+            alt="author"
+          />
         </div>
       </div>
-      <ReactMarkdown>{item.body}</ReactMarkdown>
+      <p className={classes.markdown__description}>{item.description}</p>
+      <ReactMarkdown className={classes.markdown__body}>{item.body}</ReactMarkdown>
     </div>
   );
 };
