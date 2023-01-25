@@ -25,4 +25,42 @@
       border-radius: 5px;
     }
   }
+
+  div {
+    &:last-child {
+      display: flex;
+      align-items: center;
+
+      .link_create {
+        // height: 31px;
+        font-size: 14px;
+        line-height: 1;
+        padding: 6px 15px;
+        // text-align: center;
+        color: #52C41A;
+        border: 1px solid #52C41A;
+        border-radius: 5px;
+      }
+
+      div {
+        display: flex;
+        align-items: center;
+        margin-right: 30px;
+
+        span {
+          margin-right: 15px;
+          color: rgba(0, 0, 0, .85);
+        }
+      }
+
+      .btn-logout {
+        padding: 10px 20px;
+        font-size: 18px;
+        border: 1px solid rgba(0, 0, 0, .75);
+        border-radius: 5px;
+        background-color: transparent;
+        cursor: pointer;
+      }
+    }
+  }
 }

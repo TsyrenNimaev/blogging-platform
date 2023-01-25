@@ -1,19 +1,27 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { FC } from 'react';
+import { connect } from 'react-redux';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+// import axios from 'axios';
 
+import * as actions from '../../../services/servic-api';
+import { RootState } from '../../../store/root-reducer';
 import classes from '../Authorization.module.scss';
 
 interface IFormInput {
   username: string;
-  emailAddress: string;
-  password: string | number | symbol;
-  confirmPassword: string | number | number;
+  email: string;
+  password: string;
+  confirmPassword: string;
 }
 
-const SingUp = () => {
+const SingUp: FC = ({ state, registers }: any) => {
+  const { isLoged } = state.AutorizationReducer;
+  const history = useHistory();
+
   const validationScheme = Yup.object().shape({
     username: Yup.string().required('Required field').min(2, 'You must specify at least two characters'),
     password: Yup.string().required('Password is required').min(6, 'Password must be at least 6 characters'),
@@ -21,7 +29,7 @@ const SingUp = () => {
       .required('Confirm Password is required')
       .oneOf([Yup.ref('password')], 'Passwords must match'),
   });
-  // const formOptions = { resolver: yupResolver(validationScheme) };
+
   const {
     register,
     handleSubmit,
@@ -30,11 +38,14 @@ const SingUp = () => {
   } = useForm<IFormInput>({ mode: 'onBlur', resolver: yupResolver(validationScheme) });
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
+    const postData: any = {
+      user: { username: data.username, email: data.email, password: data.password },
+    };
+    registers(postData);
     reset();
   };
 
-  // const invalid = [classes.form__input];
+  if (isLoged) history.goBack();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
@@ -52,9 +63,9 @@ const SingUp = () => {
       <label className={classes.form__label}>
         Email address
         <input
-          {...register('emailAddress', { required: true })}
+          {...register('email', { required: true })}
           type="email"
-          className={`${classes.form__input} ${errors.emailAddress ? classes.invalid : ''}`}
+          className={`${classes.form__input} ${errors.email ? classes.invalid : ''}`}
           placeholder="Email address"
         />
       </label>
@@ -80,7 +91,7 @@ const SingUp = () => {
       <div className={classes.form__errors}>{errors.confirmPassword?.message}</div>
       <label className={classes.form__label}>
         I agree to the processing of my personal information
-        <input type="checkbox" className={classes.form__checkbox} required checked />
+        <input type="checkbox" className={classes.form__checkbox} required defaultChecked />
       </label>
       <button type="submit" className={classes.form__btn} disabled={!isValid}>
         Create
@@ -92,4 +103,8 @@ const SingUp = () => {
   );
 };
 
-export default SingUp;
+const mapStateProps = (state: RootState) => {
+  return { state };
+};
+
+export default connect(mapStateProps, actions)(SingUp);

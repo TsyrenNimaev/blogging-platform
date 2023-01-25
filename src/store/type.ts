@@ -19,3 +19,32 @@ export type ArticleList = {
     following: boolean,
   },
 };
+
+export type LoginRequestData = {
+  email: string,
+  password: string,
+};
+
+export type RegisterRequestData = {
+  username: string,
+  email: string,
+  password: string,
+};
+
+export type getResponseLogin = {
+  user: {
+    username: string,
+    email: string,
+    token: string,
+    image?: string,
+  },
+};
+
+export type ArticleRequestType = {
+  article: {
+    title: string,
+    description: string,
+    body: string,
+    tagList: [string],
+  },
+};

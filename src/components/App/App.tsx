@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 // import ReactMarkdown from 'react-markdown';
 
 import Header from '../Header';
@@ -13,18 +13,20 @@ function App() {
   return (
     <Router>
       <Header />
-      <Route path="/" exact component={AppList} />
-      <Route
-        exact
-        path="/articles/:slug"
-        render={({ match, history }) => {
-          return <MarkdownPage slug={match.params.slug} />;
-        }}
-      />
-      <Route path="/sing-in" exact component={SingIn} />
-      <Route path="/sing-up" exact component={SingUp} />
-      {/* <Loader /> */}
-      <Redirect to="/" />
+      <Switch>
+        <Route path="/" exact component={AppList} />
+        <Route
+          exact
+          path="/articles/:slug"
+          render={({ match }) => {
+            return <MarkdownPage slug={match.params.slug} />;
+          }}
+        />
+        <Route path="/sing-in" exact component={SingIn} />
+        <Route path="/sing-up" exact component={SingUp} />
+        {/* <Loader /> */}
+        <Redirect to="/" />
+      </Switch>
     </Router>
   );
 }
