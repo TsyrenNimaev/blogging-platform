@@ -53,11 +53,7 @@
     font-size: 14px;
     border: 1px solid #D9D9D9;
     border-radius: 4px;
-    
-    // .is-invalid {
-    //   border: 1px solid #F5222D;
-      
-    // }
+    outline-color: #b3dcfd;
   }
 
   &__btn {
@@ -65,10 +61,15 @@
     padding-top: 8px;
     padding-bottom: 8px;
     border: none;
-    border-radius: 4px;
+    // border-radius: 4px;
     color: $color-white;
     background-color: #1890FF;
-    cursor: pointer;
+    // cursor: pointer;
+
+    &:disabled {
+      cursor: default;
+      opacity: .5;
+    }
   }
 
   span {
@@ -82,19 +83,24 @@
 
   &__errors {
     height: 20px;
-    color: #F5222D;
+    color: $color-invalid;
 
     span {
       font-family: 'Roboto';
-      // font-size: 14px;
       line-height: 1;
-      color: #F5222D;
+      color: $color-invalid;
     }
+  }
+
+  .erLogin {
+    color: $color-invalid;
   }
 }
 
 .invalid {
-  // color: red;
-  border-color: #F5222D;
-  // outline-color:#F5222D;
+  border-color: $color-invalid;
+}
+
+.valid {
+  border-color: #52C41A;
 }

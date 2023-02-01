@@ -1,31 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { connect } from 'react-redux';
 
 import * as actions from '../../../services/servic-api';
 import { RootState } from '../../../store/root-reducer';
-import { LoginRequestData } from '../../../store/type';
-// import classes from './SingIn.module.scss';
+import { IFormSingIn, LoginRequestData } from '../../../store/type';
 import classes from '../Authorization.module.scss';
 
-interface IFormInput {
-  email: string;
-  password: string;
-}
-
-const SingIn: FC = ({ login, state }: any) => {
+const SingIn = ({ login, state }: any) => {
   const history = useHistory();
   const [isError, setIsError] = useState(false);
+  const hasError = state.AutorizationReducer.error;
+  const { isLoged } = state.AutorizationReducer;
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInput>({ mode: 'onBlur' });
+  } = useForm<IFormSingIn>({ mode: 'onBlur' });
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+  const onSubmit: SubmitHandler<IFormSingIn> = (data: LoginRequestData) => {
     const postData: any = {
       user: { email: data.email, password: data.password },
     };
@@ -33,7 +29,7 @@ const SingIn: FC = ({ login, state }: any) => {
     setIsError(false);
   };
 
-  if (state.AutorizationReducer.isLoged) history.goBack();
+  if (isLoged) history.goBack();
 
   useEffect(() => {
     if (state.AutorizationReducer.error !== null) {
@@ -44,6 +40,7 @@ const SingIn: FC = ({ login, state }: any) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
       <h3 className={classes.form__title}>Sign In</h3>
+      {!hasError ? null : <span className={classes.erLogin}>Autorization Erorr</span>}
       <label className={classes.form__label}>
         Email address
         <input

@@ -5,12 +5,30 @@
   width: 80%;
 
   &__title {
+    display: flex;
+    // align-items: center;
+
+  }
+  &__link {
     font-size: 20px;
     font-weight: 400;
     line-height: 1;
+    margin-right: 15px;
     margin-bottom: 6px;
     color: $color-title-articles;
   }
+
+  .like__container {
+
+    .like_count {
+      display: inline-block;
+      margin-left: 18px;
+      font-size: 14px;
+      color: rgba(0, 0, 0, .75);
+      transform:  translateY(-2px);
+    }
+  }
+    
 
   &__tag {
     line-height: 1;
@@ -41,18 +59,75 @@
     span {
       display: block;
       // width: 100%;
+      // margin-right: 20px;
       font-size: 12px;
       line-height: 1;
       color: rgba(0, 0, 0, 0.5);
     }
   }
 
-  // &__date {
-
-  // }
   &__img {
     width: 46px;
     height: 46px;
     border-radius: 50%;
+  }
+}
+
+.liked {
+  position: relative;
+  display: inline-block;
+  width: 10px;
+  height: 17px;
+  border-radius: 5px 5px 0 0;
+  border: 1px solid $color-invalid;
+  background-color: $color-invalid;
+  transform: rotate(315deg);
+  cursor: pointer;
+  
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: -1px;
+    width: 15px;
+    height: 8px;
+    border-radius: 0 5px 5px 0;
+    border: 1px solid $color-invalid;
+    background-color: $color-invalid;
+  }
+}
+
+.unliked {
+  position: relative;
+  display: inline-block;
+  width: 10px;
+  height: 17px;
+  border-radius: 5px 5px 0 0;
+  border: 1px solid rgba(0, 0, 0, .75);
+  background-color: $color-white;
+  transform: rotate(315deg);
+  cursor: pointer;      
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 9px;
+    top: 4px;
+    left: 0;
+    background-color: $color-white;
+    z-index: 2;
+  }
+  
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: -1px;
+    width: 15px;
+    height: 8px;
+    border-radius: 0 5px 5px 0;
+    border: 1px solid rgba(0, 0, 0, .75);
+    background-color: $color-white;
   }
 }

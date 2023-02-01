@@ -5,13 +5,16 @@ export type State = {
 };
 
 export type ArticleList = {
-  slug: string,
+  slug?: string,
   title: string,
   description: string,
-  body: string,
+  body?: string,
   tagList: [string],
-  articlesCount: number,
+  articlesCount?: number,
   updatedAt: string,
+  favorited?: boolean,
+  favoritesCount: number,
+  createdAt?: string,
   author: {
     username: string,
     bio: string,
@@ -47,4 +50,40 @@ export type ArticleRequestType = {
     body: string,
     tagList: [string],
   },
+};
+
+export type updateInfo = {
+  user: {
+    username: string,
+    email: string,
+    password?: string,
+    image?: string,
+  },
+};
+
+export type IFormLogUp = {
+  username: string,
+  email: string,
+  password: string,
+  confirmPassword: string,
+  checkbox: boolean,
+};
+
+export type IFormSingIn = {
+  email: string,
+  password: string,
+};
+
+export type IFormCreate = {
+  title: string,
+  description: string,
+  body: string,
+  tagList: string,
+};
+
+export type IFormProfile = {
+  username: string,
+  email: string,
+  password: string,
+  avatar: string,
 };

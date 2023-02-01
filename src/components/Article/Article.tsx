@@ -2,22 +2,35 @@
 import React, { FC, useState } from 'react';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
-// import ReactMarkdown from 'react-markdown';
+import { connect, useDispatch } from 'react-redux';
+// import { ThunkDispatch } from 'redux-thunk';
+// import { AnyAction } from 'redux';
 
 import { ArticleList } from '../../store/type';
+import * as actions from '../../services/servic-api';
+import { RootState, AppDispatch } from '../../store/root-reducer';
 import defaultImg from '../../assets/img/defaultImg.png';
 
 import classes from './Article.module.scss';
 
-const Article: FC<ArticleList> = ({ title, description, tagList, author, body, slug, updatedAt }) => {
+const Article: FC<ArticleList> = ({
+  title,
+  description,
+  tagList,
+  author,
+  favoritesCount,
+  favorited,
+  slug,
+  updatedAt,
+}) => {
   const formatedDate = format(new Date(updatedAt), 'MMM d, yyyy');
   const cutTitle = title.length > 20 ? title.slice(0, 20).concat('...') : title;
-  const cutDescription =
-    description.split(' ').length > 50 ? description.split(' ').slice(0, 50).join(' ').concat('...') : description;
+  // const cutDescription =
+  //   description.split(' ').length > 50 ? description.split(' ').slice(0, 50).join(' ').concat('...') : description;
   const [errorImg, setErrorImg] = useState(false);
   // eslint-disable-next-line consistent-return, @typescript-eslint/no-explicit-any
   const tags = tagList.map((tag: string): any => {
-    if (tag.length < 20) {
+    if (tag.length < 20 && tag !== null) {
       return (
         <span key={Math.random()} className={classes.article__tag}>
           {tag}
@@ -26,16 +39,32 @@ const Article: FC<ArticleList> = ({ title, description, tagList, author, body, s
     }
   });
 
+  const dispatch: AppDispatch = useDispatch();
+
+  const onLike = () => {
+    if (slug !== undefined) {
+      if (!favorited) {
+        dispatch(actions.likePost(slug));
+      } else {
+        dispatch(actions.unlikePost(slug));
+      }
+    }
+  };
+
   return (
     <>
       <div className={classes.article}>
-        <h2>
-          <Link className={classes.article__title} to={`/articles/${slug}`}>
+        <h2 className={classes.article__title}>
+          <Link className={classes.article__link} to={`/articles/${slug}`}>
             {cutTitle}
           </Link>
+          <div className={classes.like__container}>
+            <span onClick={onLike} className={favorited ? classes.liked : classes.unliked}></span>
+            <span className={classes.like_count}>{favoritesCount}</span>
+          </div>
         </h2>
         {tags}
-        <p className={classes.article__description}>{cutDescription}</p>
+        <p className={classes.article__description}>{description}</p>
       </div>
       <div className={classes.author}>
         <span className={classes.author__username}>
@@ -49,9 +78,12 @@ const Article: FC<ArticleList> = ({ title, description, tagList, author, body, s
           className={classes.author__img}
         />
       </div>
-      {/* <ReactMarkdown className={classes.markdown__body}>{body}</ReactMarkdown> */}
     </>
   );
 };
 
-export default Article;
+const mapStateProps = (state: RootState) => {
+  return { state };
+};
+
+export default connect(mapStateProps, actions)(Article);

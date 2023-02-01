@@ -1,7 +1,7 @@
 /* eslint-disable multiline-ternary */
 import React, { FC, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link, Redirect, useParams, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import * as actions from '../../services/servic-api';
 import { RootState, useAppSelector } from '../../store/root-reducer';
@@ -26,7 +26,7 @@ const Header: FC<IHeaderType> = ({ setLogin, logout }) => {
   const setImg = currentUser?.user.image ? currentUser?.user.image : defaultImg;
   return (
     <header className={classes.header}>
-      <a href="#">Realworld Blog</a>
+      <Link to="/">Realworld Blog</Link>
       {!isLogedin ? (
         <div>
           <Link to="sing-in">Sign In</Link>
@@ -34,11 +34,13 @@ const Header: FC<IHeaderType> = ({ setLogin, logout }) => {
         </div>
       ) : (
         <div>
-          <a className={classes.link_create}>Create article</a>
-          <div>
-            <span>{currentUser?.user.username}John Doe</span>
+          <Link to="/new-article" title="Create new article" className={classes.link_create}>
+            Create article
+          </Link>
+          <Link className={classes.profile_user} to="/profile">
+            <span>{currentUser?.user.username}</span>
             <img src={setImg} alt="user-logo" />
-          </div>
+          </Link>
           <button className={classes['btn-logout']} onClick={logout}>
             Log Out
           </button>

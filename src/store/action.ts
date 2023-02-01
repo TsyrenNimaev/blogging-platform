@@ -8,11 +8,13 @@ export interface ArticleState {
   offset: number;
   errors: unknown;
   markdownPage: any;
+  createPage: any;
+  like: any;
 }
 
 export interface AutorizationState {
-  user: getResponseLogin | null;
-  error: Error | null;
+  user: getResponseLogin | null | undefined;
+  error: boolean;
   article: ArticleRequestType | null;
   isLoged: boolean;
 }
@@ -27,6 +29,13 @@ export enum GetActionType {
   LOGIN = 'LOGIN',
   LOGOUT = 'LOGOUT',
   SET_LOGIN = 'SET_LOGIN',
+  EDIT_PROFILE = 'EDIT_PROFILE',
+  ERROR = 'ERROR',
+  CREATE_ARTICLE = 'CREATE_ARTICLE',
+  EDIT_ARTICLE = 'EDIT_ARTICLE',
+  DELETE_ARTICLE = 'DELETE_ARTICLE',
+  LIKE_POST = 'LIKE_POST',
+  UNLIKE_POST = 'UNLIKE_POST',
 }
 
 interface SUCCESS_LOAD {
@@ -74,8 +83,46 @@ interface LOGOUT {
 
 interface SET_LOGIN {
   type: GetActionType.SET_LOGIN;
-  payload: null | getResponseLogin;
+  payload: getResponseLogin | null;
   isLoged: boolean;
+}
+
+interface EDIT_PROFILE {
+  type: GetActionType.EDIT_PROFILE;
+  payload: getResponseLogin | null;
+  error: boolean;
+  isLoget: boolean;
+}
+
+interface ERROR {
+  type: GetActionType.ERROR;
+  error: boolean;
+}
+
+interface CREATE_ARTICLE {
+  type: GetActionType.CREATE_ARTICLE;
+  payload: ArticleRequestType | null;
+  loading: boolean;
+  error: any;
+}
+
+interface EDIT_ARTICLE {
+  type: GetActionType.EDIT_ARTICLE;
+  payload: ArticleList | null;
+}
+
+interface DELETE_ARTICLE {
+  type: GetActionType.DELETE_ARTICLE;
+}
+
+interface LIKE_POST {
+  type: GetActionType.LIKE_POST;
+  payload: [];
+}
+
+interface UNLIKE_POST {
+  type: GetActionType.UNLIKE_POST;
+  payload: [];
 }
 
 export type GetCombineType =
@@ -86,4 +133,11 @@ export type GetCombineType =
   | REGISTRATION
   | LOGIN
   | LOGOUT
-  | SET_LOGIN;
+  | SET_LOGIN
+  | EDIT_PROFILE
+  | ERROR
+  | CREATE_ARTICLE
+  | EDIT_ARTICLE
+  | DELETE_ARTICLE
+  | LIKE_POST
+  | UNLIKE_POST;

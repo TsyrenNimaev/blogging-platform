@@ -5,29 +5,29 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { Link, useHistory } from 'react-router-dom';
-// import axios from 'axios';
 
 import * as actions from '../../../services/servic-api';
 import { RootState } from '../../../store/root-reducer';
 import classes from '../Authorization.module.scss';
-
-interface IFormInput {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+import { IFormLogUp } from '../../../store/type';
 
 const SingUp: FC = ({ state, registers }: any) => {
   const { isLoged } = state.AutorizationReducer;
   const history = useHistory();
 
   const validationScheme = Yup.object().shape({
-    username: Yup.string().required('Required field').min(2, 'You must specify at least two characters'),
-    password: Yup.string().required('Password is required').min(6, 'Password must be at least 6 characters'),
+    username: Yup.string()
+      .required('Required field')
+      .min(2, 'You must specify at least two characters')
+      .max(20, 'maximum number of characters - 20'),
+    password: Yup.string()
+      .required('Password is required')
+      .min(6, 'Password must be at least 6 characters')
+      .max(40, 'maximum number of characters - 40'),
     confirmPassword: Yup.string()
       .required('Confirm Password is required')
       .oneOf([Yup.ref('password')], 'Passwords must match'),
+    checkbox: Yup.bool().oneOf([true], 'Checkbox selection is required'),
   });
 
   const {
@@ -35,9 +35,9 @@ const SingUp: FC = ({ state, registers }: any) => {
     handleSubmit,
     formState: { errors, isValid },
     reset,
-  } = useForm<IFormInput>({ mode: 'onBlur', resolver: yupResolver(validationScheme) });
+  } = useForm<IFormLogUp>({ mode: 'onBlur', resolver: yupResolver(validationScheme) });
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+  const onSubmit: SubmitHandler<IFormLogUp> = (data) => {
     const postData: any = {
       user: { username: data.username, email: data.email, password: data.password },
     };
@@ -55,7 +55,7 @@ const SingUp: FC = ({ state, registers }: any) => {
         <input
           {...register('username', { required: true })}
           type="text"
-          className={`${classes.form__input} ${errors.username ? classes.invalid : ''}`}
+          className={`${classes.form__input} ${errors.username ? classes.invalid : classes.valid}`}
           placeholder="Username"
         />
       </label>
@@ -63,9 +63,11 @@ const SingUp: FC = ({ state, registers }: any) => {
       <label className={classes.form__label}>
         Email address
         <input
-          {...register('email', { required: true })}
+          {...register('email', {
+            required: 'Email is required',
+          })}
           type="email"
-          className={`${classes.form__input} ${errors.email ? classes.invalid : ''}`}
+          className={`${classes.form__input} ${errors.email ? classes.invalid : classes.valid}`}
           placeholder="Email address"
         />
       </label>
@@ -74,7 +76,7 @@ const SingUp: FC = ({ state, registers }: any) => {
         <input
           {...register('password', { required: true })}
           type="password"
-          className={`${classes.form__input} ${errors.password ? classes.invalid : ''}`}
+          className={`${classes.form__input} ${errors.password ? classes.invalid : classes.valid}`}
           placeholder="Password"
         />
       </label>
@@ -84,14 +86,14 @@ const SingUp: FC = ({ state, registers }: any) => {
         <input
           {...register('confirmPassword', { required: true })}
           type="password"
-          className={`${classes.form__input} ${errors.confirmPassword ? classes.invalid : ''}`}
+          className={`${classes.form__input} ${errors.confirmPassword ? classes.invalid : classes.valid}`}
           placeholder="Repeat password"
         />
       </label>
       <div className={classes.form__errors}>{errors.confirmPassword?.message}</div>
       <label className={classes.form__label}>
         I agree to the processing of my personal information
-        <input type="checkbox" className={classes.form__checkbox} required defaultChecked />
+        <input {...register('checkbox', { required: true })} type="checkbox" className={classes.form__checkbox} />
       </label>
       <button type="submit" className={classes.form__btn} disabled={!isValid}>
         Create

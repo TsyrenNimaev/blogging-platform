@@ -2,7 +2,6 @@ import React, { FC, useEffect } from 'react';
 import { connect } from 'react-redux';
 import uniqid from 'uniqid';
 
-// import articleReducer from '../../store/article-reducer';
 import * as actions from '../../services/servic-api';
 import { RootState } from '../../store/root-reducer';
 import Paginations from '../Pagination';
@@ -11,8 +10,6 @@ import Loader from '../Loader';
 
 import classes from './AppList.module.scss';
 
-// type RootState = ReturnType<typeof articleReducer>;
-
 interface ArcticlePage {
   state: RootState;
   getContent: (offset: number) => void;
@@ -20,9 +17,10 @@ interface ArcticlePage {
 
 const AppList: FC<ArcticlePage> = ({ state, getContent }) => {
   const { offset } = state.articleReducer;
+
   useEffect(() => {
     getContent(offset);
-  }, [offset]);
+  }, [offset, state.articleReducer.like.slug, state.articleReducer.like.favorited]);
 
   const articleList = state.articleReducer.articleList.map((el) => {
     return (
@@ -33,9 +31,9 @@ const AppList: FC<ArcticlePage> = ({ state, getContent }) => {
           tagList={el.tagList}
           author={el.author}
           slug={el.slug}
-          body={el.body}
-          articlesCount={0}
           updatedAt={el.updatedAt}
+          favorited={el.favorited}
+          favoritesCount={el.favoritesCount}
         />
       </li>
     );

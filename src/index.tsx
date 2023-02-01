@@ -6,11 +6,8 @@ import thunk from 'redux-thunk';
 
 import App from './components/App';
 import { rootReducer } from './store/root-reducer';
-// import articleReducer from './store/article-reducer';
 
 import './style/index.scss';
-
-// type RootState = ReturnType<typeof articleReducer>;
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
