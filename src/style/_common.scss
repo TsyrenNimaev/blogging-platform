@@ -67,16 +67,6 @@ button {
   transition: background-color .2s ease, color .2s ease;
 }
 
-// input:not([type="checkbox"]) {
-//   width: 100%;
-//   height: 40px;
-//   padding: 8px 12px;
-//   font-family: 'Roboto';
-//   font-size: 14px;
-//   border: 1px solid #d9d9d9;
-//   border-radius: 5px;
-// }
-
-// .invalid {
-//   border-color: $color-invalid;
-// }
+.ant-row {
+  display: block;
+} 

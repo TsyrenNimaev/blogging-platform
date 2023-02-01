@@ -39,7 +39,7 @@ const Header: FC<IHeaderType> = ({ setLogin, logout }) => {
           </Link>
           <Link className={classes.profile_user} to="/profile">
             <span>{currentUser?.user.username}</span>
-            <img src={setImg} alt="user-logo" />
+            <img src={setImg} alt="user-logo" className={classes.header__img} />
           </Link>
           <button className={classes['btn-logout']} onClick={logout}>
             Log Out

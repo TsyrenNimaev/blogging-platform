@@ -63,14 +63,14 @@ const EditProfile = ({ editProfile }: any) => {
         <div className={classes.form__errors}>{errors.password && <span>{errors?.password?.message}</span>}</div>
       </label>
       <label className={classes.form__label}>
-        Avatar image
+        Avatar image (url)
         <input
-          {...register('avatar', { required: false })}
-          type="url"
-          className={`${classes.form__input} ${errors.avatar ? classes.invalid : ''}`}
+          {...register('image', { required: false })}
+          type="text"
+          className={`${classes.form__input} ${errors.image ? classes.invalid : ''}`}
           placeholder="Avatar image"
         />
-        <div className={classes.form__errors}>{errors.avatar && <span>{errors?.avatar?.message}</span>}</div>
+        <div className={classes.form__errors}>{errors.image && <span>{errors?.image?.message}</span>}</div>
       </label>
       <button type="submit" className={classes.form__btn} disabled={!isValid}>
         Save

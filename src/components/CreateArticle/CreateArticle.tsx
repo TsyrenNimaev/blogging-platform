@@ -1,14 +1,14 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { any, number, string } from 'prop-types';
-import React, { useState, useEffect } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { Button, Form, Input } from 'antd';
 import { useHistory } from 'react-router-dom';
+import uniqid from 'uniqid';
 
+import { useAppSelector, RootState } from '../../store/root-reducer';
 import * as actions from '../../services/servic-api';
-import { RootState, useAppSelector } from '../../store/root-reducer';
-import { ArticleRequestType, IFormCreate } from '../../store/type';
+import { ArticleRequestType } from '../../store/type';
 import Loader from '../Loader';
 
 import classes from './CreateArticle.module.scss';
@@ -21,157 +21,106 @@ interface PropsType {
 }
 
 const CreateArticle = (props: PropsType): any => {
-  const histoty = useHistory();
-  const { slug, createArticle, editArticle } = props;
-  // const load = state.articleReducer.loading;
-  const editTitle = slug ? useAppSelector((state) => state.articleReducer.markdownPage.title) : '';
-  const editDescription = slug ? useAppSelector((state) => state.articleReducer.markdownPage.description) : '';
-  const editBody = slug ? useAppSelector((state) => state.articleReducer.markdownPage.body) : '';
-  const editTags = slug ? useAppSelector((state) => state.articleReducer.markdownPage.tagList) : '';
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-    reset,
-  } = useForm<IFormCreate>({
-    mode: 'onBlur',
-    defaultValues: { title: editTitle, description: editDescription, body: editBody, tagList: editTags },
-  });
+  const [redirect, setRedirect] = useState(false);
+  const { editArticle, createArticle, slug } = props;
+  const editTitle = useAppSelector((state) => state.articleReducer.markdownPage.title);
+  const editDescription = useAppSelector((state) => state.articleReducer.markdownPage.description);
+  const editBody = useAppSelector((state) => state.articleReducer.markdownPage.body);
+  const editTags = useAppSelector((state) => state.articleReducer.markdownPage.tagList);
+  const [form] = Form.useForm();
+  const history = useHistory();
 
-  const onSubmit: SubmitHandler<IFormCreate> = (data) => {
-    const postData: any = {
-      article: { title: data.title, description: data.description, body: data.body, tagList: data.tagList },
+  const onFinish = (values: any) => {
+    const postData: ArticleRequestType = {
+      article: { title: values.title, description: values.description, body: values.body, tagList: values.tagList },
     };
-
     if (slug !== undefined) {
       editArticle(slug, postData);
     } else {
       createArticle(postData);
     }
-    // reset();
   };
-
-  const [redirect, setRedirect] = useState(false);
-  const [tagList, setTagList] = useState([{ tag: '' }]);
-  // useEffect(() => {
-  //   setRedirect(false);
-  //   return () => histoty.replace('/');
-  // }, [onSubmit]);
-
-  // const handleTagChange = (e: any, index: any) => {
-  //   const { name, value } = e.target;
-  //   const list = [...tagList];
-  //   list[index][name]: any = value;
-  // };
-
-  const handleTagAdd = () => {
-    setTagList([...tagList, { tag: '' }]);
-  };
-
-  const handleTagRemove = (index: number) => {
-    const list = [...tagList];
-    list.splice(index, 1);
-    setTagList(list);
-  };
+  useEffect(() => {
+    setRedirect(false);
+    return () => history.replace('/');
+  }, [onFinish]);
 
   const showLoader = redirect ? <Loader /> : null;
 
   return (
     <>
       {showLoader || (
-        <form onSubmit={handleSubmit(onSubmit)} className={classes.createForm} autoComplete="off">
-          <>
-            <h3 className={classes.createForm__title}>{slug ? 'Edit article' : 'Create new article'}</h3>
-            <label className={classes.createForm__label}>
-              Title
-              <input
-                {...register('title', {
-                  required: 'Please enter title',
-                  minLength: {
-                    value: 1,
-                    message: 'You must specify at least one character',
-                  },
-                })}
-                type="text"
-                className={classes.createForm__input}
-                placeholder="Title"
-              />
-            </label>
-            <div className={classes.form__errors}>{errors?.title && <span>{errors?.title?.message}</span>}</div>
-            <label className={classes.createForm__label}>
-              Short description
-              <input
-                {...register('description', {
-                  required: 'Please enter description',
-                  minLength: {
-                    value: 1,
-                    message: 'You must specify at least one character',
-                  },
-                })}
-                type="text"
-                className={classes.createForm__input}
-                placeholder="Title"
-              />
-            </label>
-            <div className={classes.form__errors}>
-              {errors?.description && <span>{errors?.description?.message}</span>}
-            </div>
-            <label className={classes.createForm__label}>
-              Text
-              <textarea
-                {...register('body', {
-                  required: 'Please enter text',
-                  minLength: {
-                    value: 1,
-                    message: 'You must specify at least one character',
-                  },
-                })}
-                className={classes.textarea}
-                placeholder="Text"
-                rows={10}
-              />
-            </label>
-            <div className={classes.form__errors}>{errors?.body && <span>{errors?.body?.message}</span>}</div>
-            <div className={classes.tag_list}>
-              <label htmlFor="tag" className={classes.createForm__label}>
-                Tags
-              </label>
-              {tagList.map((singleTag, index) => (
-                <div key={index} className={classes.tag_container}>
-                  <input
-                    {...register('tagList', { required: false })}
-                    type="text"
-                    className={classes.createForm_tag}
-                    placeholder="Tag"
-                  />
-                  {tagList.length !== 1 && (
-                    <button
-                      type="button"
-                      className={`${classes.create_btn} ${classes.btn_delete}`}
-                      onClick={() => handleTagRemove(index)}
-                    >
-                      Delete
-                    </button>
-                  )}
-                  <div className={classes.add_container}>
-                    {tagList.length - 1 === index && (
-                      <button
-                        type="button"
-                        className={`${classes.create_btn} ${classes.btn_add}`}
-                        onClick={handleTagAdd}
-                      >
-                        Add tag
-                      </button>
-                    )}
+        <Form form={form} name="register" onFinish={onFinish} className={classes.createForm} scrollToFirstError>
+          <h3 className={classes.createForm__title}>{slug ? 'Edit article' : 'Create new article'}</h3>
+          <Form.Item
+            name="title"
+            label="Title"
+            rules={[{ required: true, message: 'Please enter title', whitespace: true }]}
+            initialValue={slug ? editTitle : null}
+          >
+            <Input placeholder="Title" style={{ width: '100%', height: '40px' }} />
+          </Form.Item>
+          <Form.Item
+            name="description"
+            label="Short description"
+            rules={[{ required: true, message: 'Please enter description', whitespace: true }]}
+            initialValue={slug ? editDescription : null}
+          >
+            <Input placeholder="Short description" style={{ width: '100%', height: '40px' }} />
+          </Form.Item>
+          <Form.Item
+            name="body"
+            label="Text"
+            rules={[{ required: true, message: 'Please enter text', whitespace: true }]}
+            initialValue={slug ? editBody : null}
+          >
+            <Input.TextArea placeholder="Text" rows={10} className={classes.createForm__textarea} />
+          </Form.Item>
+          <div className={classes.createForm__tags_form}>
+            <Form.List name={'tagList'} initialValue={slug ? editTags : null}>
+              {(fields, { add, remove }) => (
+                <>
+                  <div key={uniqid()}>
+                    {fields.map((field) => (
+                      <div key={field.key} className={classes.createForm__tags}>
+                        <Form.Item
+                          {...field}
+                          className={classes.add_tag_field}
+                          rules={[{ required: true, message: 'Please enter tag', whitespace: true }]}
+                        >
+                          <Input
+                            placeholder="Tag"
+                            style={{
+                              height: '40px',
+                              width: '300px',
+                            }}
+                          />
+                        </Form.Item>
+                        <Button
+                          danger
+                          className={`${classes.create_btn} ${classes.btn_delete}`}
+                          onClick={() => remove(field.name)}
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    ))}
                   </div>
-                </div>
-              ))}
-            </div>
-            <button type="submit" className={classes.form_btn} disabled={!isValid}>
+                  <>
+                    <Button onClick={() => add()} className={`${classes.create_btn} ${classes.btn_add}`}>
+                      Add tags
+                    </Button>
+                  </>
+                </>
+              )}
+            </Form.List>
+          </div>
+          <Form.Item>
+            <Button className={classes.form_btn} type="primary" htmlType="submit">
               Send
-            </button>
-          </>
-        </form>
+            </Button>
+          </Form.Item>
+        </Form>
       )}
     </>
   );
@@ -182,39 +131,3 @@ const mapStateProps = (state: RootState) => {
 };
 
 export default connect(mapStateProps, actions)(CreateArticle);
-// import React, { FC, useEffect, useState } from 'react';
-// import { connect } from 'react-redux';
-// import { Button, Form, Input } from 'antd';
-// import { useHistory } from 'react-router-dom';
-
-// import { useAppSelector, RootState } from '../../store/root-reducer';
-// import * as actions from '../../services/servic-api';
-// import { ArticleRequestType } from '../../store/type';
-
-// interface PropsType {
-//   editArticle: (slug: string, postData: ArticleRequestType) => void;
-//   getSinglePage: (slug: string) => void;
-//   createArticle: (postData: ArticleRequestType) => void;
-//   slug: string;
-// }
-
-// const CreateArticle = (props: PropsType): any => {
-//   const [redirect, setRedirect] = useState(false);
-//   const { editArticle, getSinglePage, createArticle, slug } = props;
-//   const editTitle = useAppSelector((state) => state.articleReducer.markdownPage.title);
-//   const editDescription = useAppSelector((state) => state.articleReducer.markdownPage.description);
-//   const editBody = useAppSelector((state) => state.articleReducer.markdownPage.body);
-//   const editTags = useAppSelector((state) => state.articleReducer.markdownPage.tagList);
-//   const [form] = Form.useForm();
-//   const history = useHistory();
-
-//   const onFinish = (value: any) => {
-//     const postData: ArticleRequestType = {}
-//   }
-// };
-
-// const mapStateProps = (state: RootState) => {
-//   return { state };
-// };
-
-// export default connect(mapStateProps, actions)(CreateArticle);

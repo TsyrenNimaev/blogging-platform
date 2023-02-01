@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
 import React, { FC, useState } from 'react';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
-// import { ThunkDispatch } from 'redux-thunk';
-// import { AnyAction } from 'redux';
 
 import { ArticleList } from '../../store/type';
 import * as actions from '../../services/servic-api';
@@ -25,10 +25,7 @@ const Article: FC<ArticleList> = ({
 }) => {
   const formatedDate = format(new Date(updatedAt), 'MMM d, yyyy');
   const cutTitle = title.length > 20 ? title.slice(0, 20).concat('...') : title;
-  // const cutDescription =
-  //   description.split(' ').length > 50 ? description.split(' ').slice(0, 50).join(' ').concat('...') : description;
   const [errorImg, setErrorImg] = useState(false);
-  // eslint-disable-next-line consistent-return, @typescript-eslint/no-explicit-any
   const tags = tagList.map((tag: string): any => {
     if (tag.length < 20 && tag !== null) {
       return (

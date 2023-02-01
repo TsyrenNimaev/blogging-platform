@@ -34,7 +34,7 @@ function App() {
         <Route path="/sing-in" exact component={SingIn} />
         <Route path="/sing-up" exact component={SingUp} />
         {user ? <Route path="/profile" component={EditProfile} /> : <Redirect to="/sing-in" />}
-        {user ? <Route path="/new-article" component={CreateArticle} /> : <Redirect to="/sing-in" />}
+        {user ? <Route path="/new-article" exact component={CreateArticle} /> : <Redirect to="/sing-in" />}
         <Redirect to="/" />
       </Switch>
     </Router>
