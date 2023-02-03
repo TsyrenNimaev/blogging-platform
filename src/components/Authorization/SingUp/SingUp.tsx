@@ -55,7 +55,7 @@ const SingUp: FC = ({ state, registers }: any) => {
         <input
           {...register('username', { required: true })}
           type="text"
-          className={`${classes.form__input} ${errors.username ? classes.invalid : classes.valid}`}
+          className={`${classes.form__input} ${errors.username ? classes.invalid : ''}`}
           placeholder="Username"
         />
       </label>
@@ -67,7 +67,7 @@ const SingUp: FC = ({ state, registers }: any) => {
             required: 'Email is required',
           })}
           type="email"
-          className={`${classes.form__input} ${errors.email ? classes.invalid : classes.valid}`}
+          className={`${classes.form__input} ${errors.email ? classes.invalid : ''}`}
           placeholder="Email address"
         />
       </label>
@@ -76,7 +76,7 @@ const SingUp: FC = ({ state, registers }: any) => {
         <input
           {...register('password', { required: true })}
           type="password"
-          className={`${classes.form__input} ${errors.password ? classes.invalid : classes.valid}`}
+          className={`${classes.form__input} ${errors.password ? classes.invalid : ''}`}
           placeholder="Password"
         />
       </label>
@@ -86,7 +86,7 @@ const SingUp: FC = ({ state, registers }: any) => {
         <input
           {...register('confirmPassword', { required: true })}
           type="password"
-          className={`${classes.form__input} ${errors.confirmPassword ? classes.invalid : classes.valid}`}
+          className={`${classes.form__input} ${errors.confirmPassword ? classes.invalid : ''}`}
           placeholder="Repeat password"
         />
       </label>

@@ -127,7 +127,7 @@ export const setLogin = () => {
       method: 'get',
       url: 'https://blog.kata.academy/api/user',
       headers: {
-        Autorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });

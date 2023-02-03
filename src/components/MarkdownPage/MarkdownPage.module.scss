@@ -76,7 +76,7 @@
       display: inline-block;
       margin-left: 18px;
       font-size: 14px;
-      color: rgba(0, 0, 0, .75);
+      color: $text-color;
       transform:  translateY(-2px);
     }
   }
@@ -111,7 +111,7 @@
     width: 10px;
     height: 17px;
     border-radius: 5px 5px 0 0;
-    border: 1px solid rgba(0, 0, 0, .75);
+    border: 1px solid $text-color;
     background-color: $color-white;
     transform: rotate(315deg);
     cursor: pointer;      
@@ -135,7 +135,7 @@
       width: 15px;
       height: 8px;
       border-radius: 0 5px 5px 0;
-      border: 1px solid rgba(0, 0, 0, .75);
+      border: 1px solid $text-color;
       background-color: $color-white;
     }
   }

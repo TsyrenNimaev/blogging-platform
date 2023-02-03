@@ -66,11 +66,11 @@
       .btn-logout {
         padding: 10px 20px;
         font-size: 18px;
-        border: 1px solid rgba(0, 0, 0, .75);
+        border: 1px solid $text-color;
 
         &:hover {
           color: $color-white;
-          background-color: rgba(0, 0, 0, .75);
+          background-color: $text-color;
         }
       }
     }
